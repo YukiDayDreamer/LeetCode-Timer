@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Leetcode Timer
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Mount a Timer for Leetcode Problem
 // @author       YukiDayDreamer
 // @updateURL    https://raw.githubusercontent.com/YukiDayDreamer/LeetCode-Timer/master/LeetCode-Timer.meta.js
@@ -65,13 +65,14 @@
     h('.leetcode-timer-start').addEventListener('click', (e) => {
       h('.leetcode-timer-settings').style.display = 'none';
       h('.leetcode-timer-counting').style.display = '';
+      h('.leetcode-timer-time-display').innerHTML = `${defaultMinutes} : 00`;
       counter = countDown();
     });
 
     h('.leetcode-timer-stop').addEventListener('click', (e) => {
       h('.leetcode-timer-settings').style.display = '';
       h('.leetcode-timer-counting').style.display = 'none';
-      h('.leetcode-timer-time-display').innerHTML = '';
+      h('.leetcode-timer-time-display').innerHTML = '00 : 00';
       if (counter) {
         clearInterval(counter);
       }

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Leetcode Timer
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Mount a Timer for Leetcode Problem
 // @author       YukiDayDreamer
 // @updateURL    https://raw.githubusercontent.com/YukiDayDreamer/LeetCode-Timer/master/LeetCode-Timer.meta.js
@@ -15,20 +15,21 @@
 
   const h = document.querySelector.bind(document);
 
-  let k = 10; // wait 10s
+  let retryWait = 200;
+  let patience = 20 * 1000; // patience time: 20s
 
   let addTimer = setInterval(function () {
-    if (k <= 0) {
+    if (patience <= 0) {
       clearInterval(addTimer);
     }
     const titleEl = h('div[data-cy="question-title"]');
     if (!titleEl) {
-      k--;
-    } else {
-      clearInterval(addTimer);
-      initTimer();
+      patience -= retryWait;
+      return;
     }
-  }, 1000);
+    clearInterval(addTimer);
+    initTimer();
+  }, retryWait);
 
   function initTimer() {
     const titleEl = h('div[data-cy="question-title"]');
@@ -40,39 +41,51 @@
 
     let defaultMinutes = 30;
     let time2Display = '30 : 00';
+    let timesUp = '00 : 00';
     let counter;
 
-    const timer = `
+    const timerContainer = `
       <div class="leetcode-timer" style="margin:10px 0">
-        <span class="leetcode-timer-settings">
-          <input class="leetcode-timer-time" value="${defaultMinutes}" style="width:50px"/>&nbsp;Minutes
+        <span class="leetcode-timer-settings-container">
+          <input type="number" class="leetcode-timer-input" value="${defaultMinutes}" style="width:80px"/>&nbsp;Minutes
           <button class="leetcode-timer-start">${startIcon}</button>
         </span>
-        <span class="leetcode-timer-counting" style="display:none">
+        <span class="leetcode-timer-counting-container" style="display:none">
           <span class="leetcode-timer-time-display">${time2Display}</span>
           <button class="leetcode-timer-stop">${stopIcon}</button>
         </span>
       </div>
     `;
 
-    titleEl.innerHTML = titleText + timer;
+    titleEl.innerHTML = titleText + timerContainer; // add to DOM
 
-    h('.leetcode-timer-time').addEventListener('input', (e) => {
+    const settingsContainer = h('.leetcode-timer-settings-container');
+    const timeInputEl = h('.leetcode-timer-input');
+    const startButton = h('.leetcode-timer-start');
+
+    const countingContainer = h('.leetcode-timer-counting-container');
+    const displayEl = h('.leetcode-timer-time-display');
+    const stopButton = h('.leetcode-timer-stop');
+
+    timeInputEl.addEventListener('input', (e) => {
       defaultMinutes = parseInt(e.target.value, 10);
-      h('.leetcode-timer-time-display').innerHTML = `${defaultMinutes} : 00`;
     });
 
-    h('.leetcode-timer-start').addEventListener('click', (e) => {
-      h('.leetcode-timer-settings').style.display = 'none';
-      h('.leetcode-timer-counting').style.display = '';
-      h('.leetcode-timer-time-display').innerHTML = `${defaultMinutes} : 00`;
+    startButton.addEventListener('click', (e) => {
+      settingsContainer.style.display = 'none';
+      countingContainer.style.display = '';
+      updateTime2Display();
+      if (counter) {
+        clearInterval(counter);
+      }
       counter = countDown();
     });
 
-    h('.leetcode-timer-stop').addEventListener('click', (e) => {
-      h('.leetcode-timer-settings').style.display = '';
-      h('.leetcode-timer-counting').style.display = 'none';
-      h('.leetcode-timer-time-display').innerHTML = '00 : 00';
+    stopButton.addEventListener('click', (e) => {
+      settingsContainer.style.display = '';
+      countingContainer.style.display = 'none';
+      time2Display = timesUp;
+      updateTime2Display(timesUp);
       if (counter) {
         clearInterval(counter);
       }
@@ -85,20 +98,33 @@
         let now = new Date().getTime();
         let dist = target - now;
 
-        if (counter <= 0) {
+        if (dist <= 0) {
           clearInterval(counter);
+          updateTime2Display(timesUp);
+          return;
         }
 
         let m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
         let s = Math.floor((dist % (1000 * 60)) / 1000);
 
-        time2Display =
-          (m >= 10 ? m : '0' + m) + ' : ' + (s >= 10 ? s : '0' + s);
+        time2Display = formatTime(m, s);
 
-        h('.leetcode-timer-time-display').innerHTML = time2Display;
+        updateTime2Display(time2Display);
       }, 1000);
 
       return counter;
+    }
+
+    function updateTime2Display(value) {
+      if (value !== undefined) {
+        displayEl.innerHTML = value;
+        return;
+      }
+      displayEl.innerHTML = formatTime(defaultMinutes, 0);
+    }
+
+    function formatTime(m, s) {
+      return (m >= 10 ? m : '0' + m) + ' : ' + (s >= 10 ? s : '0' + s);
     }
   }
 })();

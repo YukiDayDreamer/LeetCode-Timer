@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Leetcode Timer
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/YukiDayDreamer/LeetCode-Timer/
 // @version      0.3
 // @description  Mount a Timer for Leetcode Problem
 // @author       YukiDayDreamer

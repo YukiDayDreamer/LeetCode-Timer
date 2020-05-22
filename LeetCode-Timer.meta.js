@@ -2,8 +2,10 @@
 // @name         Leetcode Timer
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  Add a timer for Leetcode
-// @author       Yuki
+// @description  Mount a Timer for Leetcode Problem
+// @author       YukiDayDreamer
+// @updateURL    https://raw.githubusercontent.com/YukiDayDreamer/LeetCode-Timer/master/LeetCode-Timer.meta.js
+// @downloadURL  https://raw.githubusercontent.com/YukiDayDreamer/LeetCode-Timer/master/LeetCode-Timer.user.js
 // @match        https://leetcode.com/problems/*
 // @grant        none
 // ==/UserScript==

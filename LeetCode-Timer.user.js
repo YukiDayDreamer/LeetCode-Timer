@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Leetcode Timer
 // @namespace    https://github.com/YukiDayDreamer/LeetCode-Timer/
-// @version      0.3
+// @version      0.4
 // @description  Mount a Timer for Leetcode Problem
 // @author       YukiDayDreamer
 // @updateURL    https://raw.githubusercontent.com/YukiDayDreamer/LeetCode-Timer/master/LeetCode-Timer.meta.js
@@ -41,7 +41,7 @@
 
     let defaultMinutes = 30;
     let time2Display = '30 : 00';
-    let timesUp = '00 : 00';
+    let timesUp = `<span style="color:red">Time's Up!</span>`;
     let counter;
 
     const timerContainer = `
@@ -64,7 +64,7 @@
     const startButton = h('.leetcode-timer-start');
 
     const countingContainer = h('.leetcode-timer-counting-container');
-    const displayEl = h('.leetcode-timer-time-display');
+    const displayContainer = h('.leetcode-timer-time-display');
     const stopButton = h('.leetcode-timer-stop');
 
     timeInputEl.addEventListener('input', (e) => {
@@ -72,9 +72,9 @@
     });
 
     startButton.addEventListener('click', (e) => {
+      updateTime2Display();
       settingsContainer.style.display = 'none';
       countingContainer.style.display = '';
-      updateTime2Display();
       if (counter) {
         clearInterval(counter);
       }
@@ -84,8 +84,6 @@
     stopButton.addEventListener('click', (e) => {
       settingsContainer.style.display = '';
       countingContainer.style.display = 'none';
-      time2Display = timesUp;
-      updateTime2Display(timesUp);
       if (counter) {
         clearInterval(counter);
       }
@@ -117,13 +115,20 @@
 
     function updateTime2Display(value) {
       if (value !== undefined) {
-        displayEl.innerHTML = value;
+        displayContainer.innerHTML = value;
         return;
       }
-      displayEl.innerHTML = formatTime(defaultMinutes, 0);
+      displayContainer.innerHTML = formatTime(defaultMinutes, 0);
     }
 
     function formatTime(m, s) {
+      let formattedTime =
+        (m >= 10 ? m : '0' + m) + ' : ' + (s >= 10 ? s : '0' + s);
+      if (m < 1) {
+        return `<span style="color:red">${formattedTime}</span>`;
+      } else if (m < 5) {
+        return `<span style="color:orange">${formattedTime}</span>`;
+      }
       return (m >= 10 ? m : '0' + m) + ' : ' + (s >= 10 ? s : '0' + s);
     }
   }

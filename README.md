@@ -12,5 +12,5 @@ Please make sure [tampermonkey](http://tampermonkey.net/) or [greasemonkey](http
 ### Settings
 ![Settings](./screenshots/settings.png)
 
-### Onging
-![Onging](./screenshots/onging.png)
+### Ongoing
+![Onging](./screenshots/ongoing.png)

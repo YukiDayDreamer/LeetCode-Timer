@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Leetcode Timer
 // @namespace    https://github.com/YukiDayDreamer/LeetCode-Timer/
-// @version      0.4
+// @version      0.5
 // @description  Mount a Timer for Leetcode Problem
 // @author       YukiDayDreamer
 // @updateURL    https://raw.githubusercontent.com/YukiDayDreamer/LeetCode-Timer/master/LeetCode-Timer.meta.js
@@ -22,8 +22,8 @@
     if (patience <= 0) {
       clearInterval(addTimer);
     }
-    const titleEl = h('div[data-cy="question-title"]');
-    if (!titleEl) {
+    const navContainer = h('div#navbar-right-container');
+    if (!navContainer) {
       patience -= retryWait;
       return;
     }
@@ -32,9 +32,7 @@
   }, retryWait);
 
   function initTimer() {
-    const titleEl = h('div[data-cy="question-title"]');
-
-    const titleText = titleEl.innerHTML;
+    const navContainer = h('div#navbar-right-container');
 
     const startIcon = '&#x25ba;';
     const stopIcon = '&#x25A0;';
@@ -45,7 +43,7 @@
     let counter;
 
     const timerContainer = `
-      <div class="leetcode-timer" style="margin:10px 0">
+      <div class="leetcode-timer" style="font-size:16px">
         <span class="leetcode-timer-settings-container">
           <input type="number" class="leetcode-timer-input" value="${defaultMinutes}" style="width:80px"/>&nbsp;Minutes
           <button class="leetcode-timer-start">${startIcon}</button>
@@ -57,7 +55,7 @@
       </div>
     `;
 
-    titleEl.innerHTML = titleText + timerContainer; // add to DOM
+    navContainer.innerHTML = timerContainer + navContainer.innerHTML; // prepend to nav container
 
     const settingsContainer = h('.leetcode-timer-settings-container');
     const timeInputEl = h('.leetcode-timer-input');

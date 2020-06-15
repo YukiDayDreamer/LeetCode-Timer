@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Leetcode Timer
 // @namespace    https://github.com/YukiDayDreamer/LeetCode-Timer/
-// @version      0.5
+// @version      0.6
 // @description  Mount a Timer for Leetcode Problem
 // @author       YukiDayDreamer
 // @updateURL    https://raw.githubusercontent.com/YukiDayDreamer/LeetCode-Timer/master/LeetCode-Timer.meta.js
@@ -43,7 +43,7 @@
     let counter;
 
     const timerContainer = `
-      <div class="leetcode-timer" style="font-size:16px">
+      <div class="leetcode-timer" style="color:black;font-size:16px">
         <span class="leetcode-timer-settings-container">
           <input type="number" class="leetcode-timer-input" value="${defaultMinutes}" style="width:80px"/>&nbsp;Minutes
           <button class="leetcode-timer-start">${startIcon}</button>
@@ -55,7 +55,7 @@
       </div>
     `;
 
-    navContainer.innerHTML = timerContainer + navContainer.innerHTML; // prepend to nav container
+    navContainer.insertAdjacentHTML('beforebegin', timerContainer); // prepend to nav container
 
     const settingsContainer = h('.leetcode-timer-settings-container');
     const timeInputEl = h('.leetcode-timer-input');

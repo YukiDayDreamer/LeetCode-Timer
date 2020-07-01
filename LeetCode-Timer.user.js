@@ -118,7 +118,7 @@
         time2Display = formatTime(m, s);
 
         updateTime2Display(time2Display);
-      }, 1000);
+      }, 500);
 
       return counter;
     }

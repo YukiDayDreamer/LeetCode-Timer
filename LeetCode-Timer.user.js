@@ -23,7 +23,8 @@
       clearInterval(addTimer);
     }
     const navContainer = h('div#navbar-right-container');
-    if (!navContainer) {
+    const diffLevelContainer = h('div[diff]');
+    if (!navContainer || !diffLevelContainer) {
       patience -= retryWait;
       return;
     }

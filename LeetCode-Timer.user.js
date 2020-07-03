@@ -135,12 +135,10 @@
     function formatTime(m, s) {
       let formattedTime =
         (m >= 10 ? m : '0' + m) + ' : ' + (s >= 10 ? s : '0' + s);
-      if (m < 1) {
-        return `<span style="color:${hardColor}">${formattedTime}</span>`;
-      } else if (m < 5) {
-        return `<span style="color:${mediumColor}">${formattedTime}</span>`;
-      }
-      return `<span style="color:${easyColor}">${formattedTime}</span>`;
+
+      let color = m < 1 ? hardColor : m < 5 ? mediumColor : easyColor;
+
+      return `<span style="color:${color}">${formattedTime}</span>`;
     }
   }
 })();

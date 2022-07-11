@@ -110,6 +110,7 @@
         if (dist <= 0) {
           clearInterval(counter);
           updateTime2Display(timesUp);
+          alert("Time's Up!");
           return;
         }
 

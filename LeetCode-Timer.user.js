@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Leetcode Timer
 // @namespace    https://github.com/YukiDayDreamer/LeetCode-Timer/
-// @version      0.8
+// @version      0.9
 // @description  Mount a Timer for Leetcode Problem
 // @author       YukiDayDreamer
 // @updateURL    https://raw.githubusercontent.com/YukiDayDreamer/LeetCode-Timer/master/LeetCode-Timer.meta.js
